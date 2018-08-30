@@ -3,12 +3,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.concurrent.TimeUnit;
 
 public class HourLogger {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         // Need username, password, day, start, end
         if (args.length != 6) {
             System.out.println("Invalid arguments!");
@@ -17,7 +18,7 @@ public class HourLogger {
 
         String username = args[0];
         String password = args[1];
-        String day = args[2].toUpperCase();
+        String date = args[2];
         String startTime = args[3];
         String endTime = args[4];
         String message = args[5];
@@ -44,5 +45,23 @@ public class HourLogger {
 
         // Find and click "Add Time" button
         driver.findElement(By.cssSelector("button[title='Click to add time for this day']")).click();
+
+        Thread.sleep(2000);
+
+        Select dateEntry = new Select(driver.findElement(By.id("TimeEntry_EntryDates")));
+        System.out.println("Date options: " + dateEntry.getOptions().size());
+        fillWorkingTime(dateEntry, date, startTime, endTime);
+    }
+
+    private static void fillWorkingTime(Select dateEntry, String date, String startTime, String endTime) {
+        System.out.println(date);
+        for (WebElement dayOption : dateEntry.getOptions()) {
+            String value = dayOption.getAttribute("value");
+            System.out.println(value);
+            if (value.equals(date)) {
+                dateEntry.selectByValue(value);
+                break;
+            }
+        }
     }
 }
