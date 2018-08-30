@@ -20,6 +20,6 @@ public class HourLogger {
         WebDriver driver =  new ChromeDriver();
         driver.get("https://my.ece.illinois.edu/portal/Account/Login");
 
-        
+
     }
 }
