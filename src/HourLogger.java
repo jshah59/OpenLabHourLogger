@@ -11,23 +11,36 @@ public class HourLogger {
     private static WebDriver driver;
 
     public static void main(String[] args) throws InterruptedException {
+        String username;
+        String password;
+        String date;
+        String startTime;
+        String endTime;
+        String message;
         // Need username, password, date, start, end, message
-        if (args.length != 6) {
+
+        // Default message case
+        if (args.length == 5) {
+            username = args[0];
+            password = args[1];
+            date = args[2];
+            startTime = args[3];
+            endTime = args[4];
+            message = "Lab monitor";
+        } else if (args.length == 6) {
+            username = args[0];
+            password = args[1];
+            date = args[2];
+            startTime = args[3];
+            endTime = args[4];
+            message = args[5];
+        } else {
             System.out.println("Please use the following format: ");
             System.out.println("    java -jar HourLogger.jar [username][password][M/DD/YYYY][start][end][message]");
             return;
         }
 
-        // Import arguments
-        String username = args[0];
-        String password = args[1];
-        String date = args[2];
-        String startTime = args[3];
-        String endTime = args[4];
-        String message = args[5];
-
         String chromePath = System.getProperty("user.dir") + "\\chromedriver.exe";
-        System.out.println(chromePath);
         System.setProperty("webdriver.chrome.driver", chromePath);
 
         // Initialize WebDriver and open TimeTracker URL
@@ -44,6 +57,8 @@ public class HourLogger {
 
         // Populate fields in pop-up GUI
         fillWorkingTime(date, startTime, endTime, message);
+
+        Thread.sleep(1000);     // Allow time to submit timesheet data
 
         // Safely exit Chrome
         cleanUp();
